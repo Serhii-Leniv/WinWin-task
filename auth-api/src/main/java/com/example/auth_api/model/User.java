@@ -22,9 +22,9 @@ public class User {
     private UUID id;
 
     @Column(unique = true,nullable = false)
-    private String name;
+    private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String passwordHash;
 
 }
