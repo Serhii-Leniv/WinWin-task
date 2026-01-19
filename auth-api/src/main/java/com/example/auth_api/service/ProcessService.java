@@ -15,18 +15,20 @@ public class ProcessService {
 
     private final LogRepository logRepository;
     private final UserRepository userRepository;
-
     private final RestClient restClient = RestClient.create();
 
     @Value("${internal.token}")
     private String internalToken;
+
+    @Value("${service.b.url}")
+    private String serviceBUrl;
 
     public String processRequest(String inputText, String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Користувача не знайдено"));
 
         String outputText = restClient.post()
-                .uri("http://localhost:8081/api/transform")
+                .uri(serviceBUrl + "/api/transform")
                 .header("X-Internal-Token", internalToken)
                 .body(inputText)
                 .retrieve()
@@ -42,5 +44,4 @@ public class ProcessService {
 
         return outputText;
     }
-
 }
